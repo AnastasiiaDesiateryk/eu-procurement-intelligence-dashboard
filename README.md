@@ -111,7 +111,7 @@ SupplyChainMVP/
 ├── __pycache__/
 ├── .venv/
 │
-
+```
 
 ## Running locally
 
