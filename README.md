@@ -114,6 +114,27 @@ SupplyChainMVP/
 ```
 
 ## Running locally
+This project uses large local data and database files that are not stored in this repository.
+
+Before starting the app, place the following archives in the project root:
+
+data.zip 
+
+pgdata.zip
+
+
+Then unzip them:
+
+unzip data.zip
+unzip pgdata.zip
+
+After extraction, the project root should contain:
+
+data/
+pgdata/
+
+The data/ folder contains the raw TED procurement files.
+The pgdata/ folder contains the local PostgreSQL database volume used by Docker.
 
 Create a local environment file:
 
