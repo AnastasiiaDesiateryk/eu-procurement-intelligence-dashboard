@@ -1,0 +1,23 @@
+-- -- Длительность контракта в днях
+-- CREATE OR REPLACE VIEW v_contracts_lead_time AS
+-- SELECT
+--   contract_id, supplier, buyer, start_date, end_date, contract_value,
+--   (end_date - start_date) AS lead_time_d
+-- FROM f_contracts;
+
+-- -- IQR-аутлайеры по длительности
+-- CREATE OR REPLACE VIEW v_contracts_lead_time_outliers AS
+-- WITH stats AS (
+--   SELECT
+--     PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY lead_time_d) AS q1,
+--     PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY lead_time_d) AS q3
+--   FROM v_contracts_lead_time
+-- ), bounds AS (
+--   SELECT q1, q3, (q3 - q1) AS iqr,
+--          (q1 - 1.5*(q3 - q1)) AS lo,
+--          (q3 + 1.5*(q3 - q1)) AS hi
+--   FROM stats
+-- )
+-- SELECT v.*
+-- FROM v_contracts_lead_time v, bounds b
+-- WHERE v.lead_time_d < b.lo OR v.lead_time_d > b.hi;

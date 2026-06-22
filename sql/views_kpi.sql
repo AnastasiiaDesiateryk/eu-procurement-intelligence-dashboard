@@ -1,0 +1,43 @@
+-- -- KPI по поставщику × месяц
+-- CREATE OR REPLACE VIEW v_supplier_kpi AS
+-- SELECT
+--   date_trunc('month', COALESCE(award_date, start_date))::date AS month,
+--   supplier,
+--   0::numeric AS otd_pct,
+--   0::numeric AS otif_pct,
+--   0::numeric AS podr_pct,
+--   AVG((end_date - start_date))::numeric AS lt_avg,
+--   CASE
+--     WHEN AVG((end_date - start_date)) = 0 THEN NULL
+--     ELSE (STDDEV_POP((end_date - start_date)) / NULLIF(AVG((end_date - start_date)),0))::numeric
+--   END AS lt_cov,
+--   COUNT(*) AS lines
+-- FROM f_contracts
+-- GROUP BY 1,2;
+
+-- -- KPI по всем поставщикам × месяц
+-- CREATE OR REPLACE VIEW v_kpi_monthly AS
+-- SELECT
+--   date_trunc('month', COALESCE(award_date, start_date))::date AS month,
+--   AVG(0)::numeric AS otd_pct,
+--   AVG(0)::numeric AS otif_pct,
+--   AVG(0)::numeric AS podr_pct,
+--   AVG((end_date - start_date))::numeric AS lt_avg,
+--   CASE
+--     WHEN AVG((end_date - start_date)) = 0 THEN NULL
+--     ELSE (STDDEV_POP((end_date - start_date)) / NULLIF(AVG((end_date - start_date)),0))::numeric
+--   END AS lt_cov,
+--   AVG(((end_date - start_date)/3.0 + payment_terms_d - 30))::numeric AS c2c_days
+-- FROM f_contracts
+-- GROUP BY 1
+-- ORDER BY 1;
+
+-- -- Cash-to-Cash по кварталам
+-- CREATE OR REPLACE VIEW v_c2c AS
+-- SELECT
+--   date_trunc('quarter', COALESCE(award_date, start_date))::date AS quarter,
+--   supplier,
+--   ROUND((end_date - start_date) / 3.0, 2) AS dio_days,
+--   payment_terms_d::numeric AS dso_days,
+--   30::numeric AS dpo_days
+-- FROM f_contracts;

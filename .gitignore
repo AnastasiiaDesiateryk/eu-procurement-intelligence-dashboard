@@ -1,0 +1,26 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Jupyter / VS Code
+.ipynb_checkpoints/
+.vscode/
+
+# Node / frontend
+node_modules/
+app/node_modules/
+dist/
+app/dist/
+
+# Data
+data/*
+!data/.gitkeep
+
+# Local database / Superset
+pgdata/
+superset_home/
+
+# Env file with secrets
+.env
+.DS_Store
