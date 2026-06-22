@@ -1,4 +1,4 @@
--- База данных уже есть. Создаём целевую таблицу.
+
 CREATE TABLE IF NOT EXISTS f_contracts (
   contract_id       BIGINT PRIMARY KEY,
   supplier          TEXT    NOT NULL,
@@ -12,9 +12,7 @@ CREATE TABLE IF NOT EXISTS f_contracts (
   updated_at        TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Индексы под типовые срезы/графики
--- CREATE INDEX IF NOT EXISTS ix_f_contracts_award_month
---   ON f_contracts (date_trunc('month', award_date));
+
 
 CREATE INDEX IF NOT EXISTS ix_f_contracts_buyer
   ON f_contracts (buyer);
@@ -22,7 +20,7 @@ CREATE INDEX IF NOT EXISTS ix_f_contracts_buyer
 CREATE INDEX IF NOT EXISTS ix_f_contracts_supplier
   ON f_contracts (supplier);
 
--- Триггер на updated_at (опционально, но полезно)
+
 CREATE OR REPLACE FUNCTION set_updated_at()
 RETURNS trigger AS $$
 BEGIN
