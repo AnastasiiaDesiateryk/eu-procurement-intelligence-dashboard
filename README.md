@@ -118,31 +118,30 @@ This project uses large local data and database files that are not stored in thi
 
 Before starting the app, place the following archives in the project root:
 
-data.zip 
-
-pgdata.zip
-
+``` data.zip``` and ``` pgdata.zip```
+Download from: [https://drive.google.com/drive/folders/1vBZ_rqq1QBSyJeKTWVFlttfCFZGbeVwr?usp=drive_link](url)
 
 Then unzip them:
 
-unzip data.zip
+```text unzip data.zip
 unzip pgdata.zip
+```
 
 After extraction, the project root should contain:
-
+```
 data/
 pgdata/
-
+```
 The data/ folder contains the raw TED procurement files.
 The pgdata/ folder contains the local PostgreSQL database volume used by Docker.
 
 Create a local environment file:
 
-cp .env.example .env
+``` cp .env.example .env```
 
 Start the full stack:
 
-docker compose up -d --build
+``` docker compose up -d --build```
 
 Open:
 
