@@ -15,6 +15,68 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+  init-db:
+    image: postgres:16
+    container_name: scm-init-db
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./sql:/sql:ro
+    command: |
+      bash -ec '
+        echo "Waiting for PostgreSQL..."
+        until pg_isready -h db -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"; do
+          sleep 2
+        done
+
+        apply_sql() {
+          echo ""
+          echo "== Applying $$1 =="
+          psql -h db -U "$$POSTGRES_USER" -d "$$POSTGRES_DB" -v ON_ERROR_STOP=1 -f "$$1"
+        }
+
+        apply_sql /sql/ddl.sql
+
+        # Core finance views used by /api/finance/*
+        apply_sql /sql/views_finance_basic.sql
+
+        # Optional/extra finance views
+        apply_sql /sql/views_finance.sql || echo "Warning: views_finance.sql failed or contains only comments"
+
+        # Re-apply normalized finance base views after legacy finance views
+        apply_sql /sql/views_finance_basic.sql
+
+        # CPV views used by /api/finance/buyer/top_cpv
+        apply_sql /sql/views_cpv.sql || echo "Warning: views_cpv.sql failed or contains only comments"
+
+        # Country DIO/DSO views
+        apply_sql /sql/views_dio_dso.sql
+
+        # Tender Lead Time views
+        apply_sql /sql/v_country_tlt.sql
+
+        # KPI/C2C views used by /api/kpi and /api/c2c/*
+        apply_sql /sql/views_kpi.sql || echo "Warning: views_kpi.sql failed or contains only comments"
+
+        # Data quality / diagnostics
+        apply_sql /sql/dq_views.sql || echo "Warning: dq_views.sql failed or contains only comments"
+        apply_sql /sql/lt_outliers.sql || echo "Warning: lt_outliers.sql failed or contains only comments"
+
+        echo ""
+        echo "Existing public views:"
+        psql -h db -U "$$POSTGRES_USER" -d "$$POSTGRES_DB" -c "SELECT viewname FROM pg_views WHERE schemaname = '\''public'\'' ORDER BY viewname;"
+
+        echo ""
+        echo "Database initialization completed."
+      '
+    restart: "no"     
+  
 
   backend:
     build:

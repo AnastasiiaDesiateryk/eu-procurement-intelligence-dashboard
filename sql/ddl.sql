@@ -35,3 +35,14 @@ DROP TRIGGER IF EXISTS trg_set_updated_at ON f_contracts;
 CREATE TRIGGER trg_set_updated_at
 BEFORE UPDATE ON f_contracts
 FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+-- Forward-compatible schema updates for TED procurement analytics
+ALTER TABLE f_contracts ADD COLUMN IF NOT EXISTS buyer_country TEXT;
+ALTER TABLE f_contracts ADD COLUMN IF NOT EXISTS supplier_country TEXT;
+ALTER TABLE f_contracts ADD COLUMN IF NOT EXISTS cpv_main TEXT;
+ALTER TABLE f_contracts ADD COLUMN IF NOT EXISTS dispatch_date DATE;
+
+CREATE TABLE IF NOT EXISTS cpv_dict (
+  code TEXT PRIMARY KEY,
+  name_en TEXT
+);
