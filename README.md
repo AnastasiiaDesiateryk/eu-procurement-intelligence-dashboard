@@ -119,7 +119,7 @@ This project uses large local data and database files that are not stored in thi
 Before starting the app, place the following archives in the project root:
 
 ``` data.zip``` and ``` pgdata.zip```
-Download from: [https://drive.google.com/drive/folders/1vBZ_rqq1QBSyJeKTWVFlttfCFZGbeVwr?usp=drive_link](url)
+Download from: https://drive.google.com/drive/folders/1vBZ_rqq1QBSyJeKTWVFlttfCFZGbeVwr?usp=drive_link
 
 Then unzip them:
 
