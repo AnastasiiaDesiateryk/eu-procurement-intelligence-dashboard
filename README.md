@@ -47,6 +47,72 @@ It can help answer questions such as:
 - SQL analytical views
 - Docker Compose
 
+## Project Structure
+
+```text
+SupplyChainMVP/
+├── api.py
+├── Dockerfile.api
+├── docker-compose.yml
+├── requirements.txt
+├── README.md
+├── .env
+├── .env.example
+├── .gitignore
+│
+├── app/                         # React + Vite frontend
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── vite.config.ts
+│   ├── Dockerfile
+│   └── src/
+│       ├── App.tsx
+│       ├── main.tsx
+│       ├── styles.css
+│       ├── components/
+│       │   ├── KPI.tsx
+│       │   ├── Nav.tsx
+│       │   └── SupersetEmbed.tsx
+│       └── pages/
+│           ├── Overview.tsx
+│           ├── Suppliers.tsx
+│           └── Finance.tsx
+│
+├── etl/                         # Python ETL and data preparation scripts
+│   ├── eu_ted.py
+│   ├── inspect_ted_columns.py
+│   ├── kpi.py
+│   ├── load_cpv_dict.py
+│   ├── peek_ted.py
+│   └── test_db.py
+│
+├── sql/                         # DDL and analytical SQL views
+│   ├── constraints.sql
+│   ├── ddl.sql
+│   ├── dq_views.sql
+│   ├── lt_outliers.sql
+│   ├── v_country_tlt.sql
+│   ├── views.sql
+│   ├── views_cpv.sql
+│   ├── views_dio_dso.sql
+│   ├── views_finance.sql
+│   ├── views_finance_basic.sql
+│   └── views_kpi.sql
+│
+├── data/                        # Local data storage
+│   ├── cpv/
+│   └── eu/
+│
+├── pgdata/                      # PostgreSQL volume data
+├── superset_home/               # Apache Superset local config/data
+│
+├── dash/                        # Optional dashboard-related assets
+├── __pycache__/
+├── .venv/
+│
+
+
 ## Running locally
 
 Create a local environment file:
