@@ -100,12 +100,12 @@ SupplyChainMVP/
 │   ├── views_finance_basic.sql
 │   └── views_kpi.sql
 │
-├── data/                        # Local data storage
+├── data/                        # Local data storage Not included in Git. Download/unzip data.zip here before running.
 │   ├── cpv/
 │   └── eu/
 │
-├── pgdata/                      # PostgreSQL volume data
-├── superset_home/               # Apache Superset local config/data
+├── pgdata/                      # PostgreSQL volume data Not included in Git. Download/unzip pgdata.zip here before running.
+├── superset_home/               # Apache Superset local config/data, created by Docker.
 │
 ├── dash/                        # Optional dashboard-related assets
 ├── __pycache__/
